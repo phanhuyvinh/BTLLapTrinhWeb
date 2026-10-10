@@ -1,0 +1,105 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo cáo doanh thu - Admin</title>
+    <link rel="stylesheet" href="~/css/main.css">
+    <link rel="stylesheet" href="~/css/admin.css">
+</head>
+<body>
+    <div class="dash-layout">
+        <aside class="dash-sidebar">
+            <a class="brand" asp-controller="Admin" asp-action="Index">
+                <span>✚</span> MedCare
+            </a>
+
+            <div class="side-sep">Quản trị</div>
+
+            <nav>
+                <a asp-controller="Admin" asp-action="Index">📊 Tổng quan</a>
+                <a asp-controller="Admin" asp-action="Medicines">💊 Thuốc</a>
+                <a asp-controller="Admin" asp-action="Categories">🗂️ Danh mục</a>
+                <a asp-controller="Admin" asp-action="Suppliers">🏭 Nhà cung cấp</a>
+                <a asp-controller="Admin" asp-action="NhapKho">📥 Nhập kho</a>
+                <a asp-controller="Admin" asp-action="Users">👥 Người dùng</a>
+                <a class="active" asp-controller="Admin" asp-action="Reports">📈 Báo cáo</a>
+            </nav>
+
+            <div class="side-sep">Liên kết</div>
+
+            <nav>
+                <a asp-controller="Home" asp-action="Index">🏠 Trang chủ khách hàng</a>
+                <a asp-controller="Pharmacist" asp-action="Index">💼 Khu vực Dược sĩ</a>
+            </nav>
+        </aside>
+
+        <main class="dash-main">
+            <div class="dash-header">
+                <div>
+                    <div class="breadcrumb">Admin / Báo cáo</div>
+                    <h1>Thống kê doanh thu</h1>
+                </div>
+
+                <div style="display:flex;gap:8px;align-items:center">
+                    <span id="authArea"></span>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="filter-row">
+                    <div class="form-field">
+                        <label>Từ ngày</label>
+                        <input type="date" id="fromDate">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Đến ngày</label>
+                        <input type="date" id="toDate">
+                    </div>
+
+                    <button class="btn" id="btnFilter">Áp dụng bộ lọc</button>
+                </div>
+
+                <div class="kpi-inline">
+                    Doanh thu: <b>125.800.000đ</b> · Số đơn: <b>482</b> · Sản phẩm bán: <b>1.245</b> · TB/đơn: <b>261.000đ</b>
+                </div>
+            </div>
+
+            <div class="chart-box">
+                <div class="panel-title">
+                    <span>Doanh thu theo ngày (triệu đồng)</span>
+                </div>
+
+                <div class="chart-canvas" id="revChart" style="height:280px;margin-top:20px;position:relative"></div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-title">
+                    <span>Thuốc bán chạy</span>
+                </div>
+
+                <ul class="best-selling" id="bestSelling" style="list-style:none"></ul>
+            </div>
+        </main>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="~/js/api.js"></script>
+    <script src="~/js/main.js"></script>
+    <script src="~/js/auth.js"></script>
+    <script src="~/js/admin.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (typeof requireRole === "function") requireRole("admin");
+            if (typeof renderAuthArea === "function") renderAuthArea();
+            if (typeof initReportsPage === "function") initReportsPage();
+        });
+    </script>
+</body>
+</html>

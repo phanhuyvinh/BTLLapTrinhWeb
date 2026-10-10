@@ -1,0 +1,74 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giỏ hàng - MedCare</title>
+    <link rel="stylesheet" href="~/css/main.css">
+    <link rel="stylesheet" href="~/css/customer.css">
+</head>
+<body>
+    <header class="top-header">
+        <div class="top-bar">
+            <span>📍 Tìm nhà thuốc</span>
+            <a asp-controller="Customer" asp-action="Orders">Tra cứu đơn hàng</a>
+            <span>Hotline: 1800 0000</span>
+        </div>
+
+        <div class="main-header">
+            <a class="logo" asp-controller="Home" asp-action="Index">
+                <span>✚</span> MedCare
+            </a>
+
+            <form class="search-box" onsubmit="event.preventDefault(); location.href='@Url.Action("Products", "Customer")?q=' + encodeURIComponent(this.q.value)">
+                <input name="q" type="text" placeholder="Tìm kiếm thuốc, vitamin...">
+                <button type="submit">🔍</button>
+            </form>
+
+            <div class="header-actions">
+                <span id="authArea"></span>
+                <a asp-controller="Customer" asp-action="Cart" class="link-btn">
+                    🛒 Giỏ hàng <b id="cartCount">0</b>
+                </a>
+            </div>
+        </div>
+
+        <nav class="nav">
+            <a asp-controller="Home" asp-action="Index">Trang chủ</a>
+            <a asp-controller="Customer" asp-action="Products">Thuốc & Sản phẩm</a>
+            <a asp-controller="Customer" asp-action="Consultation">💬 Tư vấn trực tuyến</a>
+            <a asp-controller="Customer" asp-action="Prescription">Đơn thuốc</a>
+            <a asp-controller="Customer" asp-action="Orders">Đơn hàng</a>
+            <a class="active" asp-controller="Customer" asp-action="Cart">Giỏ hàng</a>
+        </nav>
+    </header>
+
+    <main class="page-wrap">
+        <h1 style="margin-bottom:18px">Giỏ hàng của bạn</h1>
+
+        <div class="cart-grid">
+            <div id="cartWrap"></div>
+            <aside class="cart-summary" id="cartSummary"></aside>
+        </div>
+    </main>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="~/js/api.js"></script>
+    <script src="~/js/main.js"></script>
+    <script src="~/js/auth.js"></script>
+    <script src="~/js/cart.js"></script>
+    <script src="~/js/customer.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (typeof updateCartCount === "function") updateCartCount();
+            if (typeof renderAuthArea === "function") renderAuthArea();
+            if (typeof initCartPage === "function") initCartPage();
+        });
+    </script>
+</body>
+</html>

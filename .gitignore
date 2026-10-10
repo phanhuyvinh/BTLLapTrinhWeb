@@ -1,0 +1,15 @@
+# File tam cua Visual Studio
+.vs/
+**/.vs/
+
+# Thu muc build C#
+**/bin/
+**/obj/
+
+# File nguoi dung Visual Studio
+*.user
+*.suo
+
+# File tam
+*.tmp
+*.log

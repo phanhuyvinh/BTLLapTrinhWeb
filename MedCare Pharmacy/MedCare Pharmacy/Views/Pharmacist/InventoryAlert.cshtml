@@ -1,0 +1,69 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cảnh báo kho - Dược sĩ MedCare</title>
+    <link rel="stylesheet" href="~/css/main.css">
+    <link rel="stylesheet" href="~/css/pharmacy.css">
+</head>
+<body>
+    <div class="dash-layout">
+        <aside class="dash-sidebar">
+            <a class="brand" asp-controller="Pharmacist" asp-action="Index">
+                <span>✚</span> MedCare
+            </a>
+
+            <div class="side-sep">Nghiệp vụ Dược sĩ</div>
+
+            <nav>
+                <a asp-controller="Pharmacist" asp-action="Index">📊 Tổng quan</a>
+                <a asp-controller="Pharmacist" asp-action="Pos">💵 Bán tại quầy POS</a>
+                <a asp-controller="Pharmacist" asp-action="OnlineOrders">📦 Đơn online</a>
+                <a class="active" asp-controller="Pharmacist" asp-action="InventoryAlert">⚠️ Cảnh báo kho</a>
+                <a asp-controller="Pharmacist" asp-action="Consultation">💬 Tư vấn trực tuyến</a>
+            </nav>
+
+            <div class="side-sep">Liên kết</div>
+
+            <nav>
+                <a asp-controller="Home" asp-action="Index">🏠 Trang chủ khách hàng</a>
+                <a asp-controller="Admin" asp-action="Index">🛡️ Khu vực Admin</a>
+            </nav>
+        </aside>
+
+        <main class="dash-main">
+            <div class="dash-header">
+                <div>
+                    <div class="breadcrumb">Dược sĩ / Cảnh báo kho</div>
+                    <h1>Cảnh báo kho</h1>
+                </div>
+
+                <div style="display:flex;gap:8px;align-items:center">
+                    <span id="authArea"></span>
+                </div>
+            </div>
+
+            <div id="alertRoot"></div>
+        </main>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="~/js/api.js"></script>
+    <script src="~/js/main.js"></script>
+    <script src="~/js/auth.js"></script>
+    <script src="~/js/pharmacy.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (typeof requireRole === "function") requireRole("pharmacist");
+            if (typeof renderAuthArea === "function") renderAuthArea();
+            if (typeof initInventoryAlertPage === "function") initInventoryAlertPage();
+        });
+    </script>
+</body>
+</html>

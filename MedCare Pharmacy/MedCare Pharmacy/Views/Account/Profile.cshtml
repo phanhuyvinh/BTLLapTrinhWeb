@@ -1,0 +1,104 @@
+﻿@{
+    ViewData["Title"] = "Tài khoản của tôi";
+}
+<div class="section" style="max-width:720px">
+    <div class="section-title"><h2>Tài khoản của tôi</h2></div>
+    <div class="panel">
+        <form id="profileForm" class="form-grid">
+            <div class="full" style="display:flex;align-items:center;gap:16px">
+                <img id="avatarPreview" alt="" src="" style="width:72px;height:72px;border-radius:50%;object-fit:cover;background:#eaf8f3;display:none">
+                <div>
+                    <label class="btn ghost small" style="display:inline-block">
+                        Đổi ảnh đại diện
+                        <input id="avatarFile" type="file" accept="image/jpeg,image/png,image/webp" hidden>
+                    </label>
+                    <p class="text-muted" style="margin-top:6px">JPG, PNG, WEBP — tối đa 2MB</p>
+                </div>
+            </div>
+            <div class="form-field">
+                <label>Họ tên</label>
+                <input name="fullName" id="fullName" required>
+            </div>
+            <div class="form-field">
+                <label>Số điện thoại</label>
+                <input name="phone" id="phone" required>
+            </div>
+            <div class="form-field">
+                <label>Email</label>
+                <input name="email" id="email" type="email" required>
+            </div>
+            <div class="form-field">
+                <label>Địa chỉ</label>
+                <input name="address" id="address">
+            </div>
+            <div class="full">
+                <button class="btn" type="submit">Lưu thay đổi</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        if (typeof requireLogin === "function" && !requireLogin()) return;
+        const u = getCurrentUser() || {};
+        document.getElementById("fullName").value = u.name || "";
+        document.getElementById("phone").value = u.phone || "";
+        document.getElementById("email").value = u.email || "";
+        document.getElementById("address").value = u.address || "";
+        const img = document.getElementById("avatarPreview");
+        if (u.avatarUrl) { img.src = u.avatarUrl; img.style.display = "block"; }
+
+        document.getElementById("avatarFile").addEventListener("change", async (e) => {
+            const file = e.target.files?.[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = () => {
+                img.src = reader.result;
+                img.style.display = "block";
+                const cur = getCurrentUser() || {};
+                cur.avatarUrl = reader.result;
+                saveAuth(cur, localStorage.getItem("medcare_token") || "demo-token");
+            };
+            reader.readAsDataURL(file);
+
+            const fd = new FormData();
+            fd.append("email", (getCurrentUser() || {}).email || "");
+            fd.append("file", file);
+            try {
+                const res = await fetch("/api/account/avatar", { method: "POST", body: fd });
+                if (res.ok) {
+                    const data = await res.json();
+                    const cur = getCurrentUser() || {};
+                    cur.avatarUrl = data.avatarUrl;
+                    saveAuth(cur, localStorage.getItem("medcare_token") || "demo-token");
+                    img.src = data.avatarUrl;
+                    showToast("Đã cập nhật ảnh");
+                }
+            } catch { /* giữ ảnh local nếu API chưa có user */ }
+        });
+
+        document.getElementById("profileForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const cur = getCurrentUser() || {};
+            cur.name = document.getElementById("fullName").value.trim();
+            cur.phone = document.getElementById("phone").value.trim();
+            cur.email = document.getElementById("email").value.trim();
+            cur.address = document.getElementById("address").value.trim();
+            saveAuth(cur, localStorage.getItem("medcare_token") || "demo-token");
+            if (typeof renderAuthArea === "function") renderAuthArea();
+            try {
+                await fetch("/api/account/profile", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        email: cur.email,
+                        fullName: cur.name,
+                        phone: cur.phone,
+                        address: cur.address
+                    })
+                });
+            } catch { /* local vẫn đã lưu */ }
+            showToast("Đã lưu hồ sơ");
+        });
+    });
+</script>

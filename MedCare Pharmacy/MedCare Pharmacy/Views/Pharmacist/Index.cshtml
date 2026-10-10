@@ -1,0 +1,132 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dược sĩ - Dashboard MedCare</title>
+    <link rel="stylesheet" href="~/css/main.css">
+    <link rel="stylesheet" href="~/css/pharmacy.css">
+</head>
+<body>
+    <div class="dash-layout">
+        <aside class="dash-sidebar">
+            <a class="brand" asp-controller="Pharmacist" asp-action="Index">
+                <span>✚</span> MedCare
+            </a>
+
+            <div class="side-sep">Nghiệp vụ Dược sĩ</div>
+
+            <nav>
+                <a class="active" asp-controller="Pharmacist" asp-action="Index">📊 Tổng quan</a>
+                <a asp-controller="Pharmacist" asp-action="Pos">💵 Bán tại quầy POS</a>
+                <a asp-controller="Pharmacist" asp-action="OnlineOrders">📦 Đơn online</a>
+                <a asp-controller="Pharmacist" asp-action="InventoryAlert">⚠️ Cảnh báo kho</a>
+                <a asp-controller="Pharmacist" asp-action="Consultation">💬 Tư vấn trực tuyến</a>
+            </nav>
+
+            <div class="side-sep">Liên kết</div>
+
+            <nav>
+                <a asp-controller="Home" asp-action="Index">🏠 Trang chủ khách hàng</a>
+                <a asp-controller="Admin" asp-action="Index">🛡️ Khu vực Admin</a>
+            </nav>
+        </aside>
+
+        <main class="dash-main">
+            <div class="dash-header">
+                <div>
+                    <div class="breadcrumb">Dược sĩ / Tổng quan</div>
+                    <h1>Xin chào Dược sĩ 👋</h1>
+                </div>
+
+                <div style="display:flex;gap:8px;align-items:center">
+                    <span id="authArea"></span>
+                </div>
+
+                <div class="text-muted" id="clock"></div>
+            </div>
+
+            <div class="stat-grid" id="dashStats">
+                <div class="stat-card">
+                    <div class="label">Doanh thu hôm nay</div>
+                    <div class="value" id="stRevenue">0đ</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="label">Đơn tại quầy</div>
+                    <div class="value" id="stPosCount">0</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="label">Đơn online</div>
+                    <div class="value" id="stOnlineCount">0</div>
+                </div>
+
+                <div class="stat-card warn">
+                    <div class="label">Cảnh báo kho</div>
+                    <div class="value" id="stAlerts">0</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="label">Tin nhắn chờ</div>
+                    <div class="value" id="chatUnread">0</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-title">
+                    <span>Lối tắt nghiệp vụ</span>
+                </div>
+
+                <div style="display:flex;gap:12px;flex-wrap:wrap">
+                    <a class="btn" asp-controller="Pharmacist" asp-action="Pos">Tạo hóa đơn POS</a>
+                    <a class="btn ghost" asp-controller="Pharmacist" asp-action="OnlineOrders">Xử lý đơn online</a>
+                    <a class="btn ghost" asp-controller="Pharmacist" asp-action="InventoryAlert">Xem cảnh báo kho</a>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-title">
+                    <span>Ghi chú nghiệp vụ</span>
+                </div>
+
+                <ul style="line-height:1.9;padding-left:20px;color:#475467;font-size:14px">
+                    <li>Hệ thống tự động trừ tồn kho sau khi tạo hóa đơn POS.</li>
+                    <li>Đơn online có đơn thuốc cần xem trước khi duyệt.</li>
+                    <li>Nhóm cảnh báo kho gồm: cận hạn, hết hạn, hết hàng, sắp hết.</li>
+                </ul>
+            </div>
+        </main>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="~/js/api.js"></script>
+    <script src="~/js/main.js"></script>
+    <script src="~/js/auth.js"></script>
+    <script src="~/js/pharmacy.js"></script>
+    <script src="~/js/chat.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (typeof requireRole === "function" && requireRole("pharmacist")) {
+                const clockEl = document.getElementById("clock");
+                if (clockEl) clockEl.textContent = new Date().toLocaleString("vi-VN");
+            }
+            if (typeof renderAuthArea === "function") renderAuthArea();
+            if (typeof initPharmacistDashboard === "function") initPharmacistDashboard();
+
+            (function upd() {
+                const el = document.getElementById("chatUnread");
+                if (el && typeof chatTotalUnreadPharmacist === "function") {
+                    el.textContent = chatTotalUnreadPharmacist();
+                }
+                setTimeout(upd, 2000);
+            })();
+        });
+    </script>
+</body>
+</html>

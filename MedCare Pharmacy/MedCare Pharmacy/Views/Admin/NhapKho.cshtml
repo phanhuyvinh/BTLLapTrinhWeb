@@ -1,0 +1,157 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhập kho - Admin</title>
+    <link rel="stylesheet" href="~/css/main.css">
+    <link rel="stylesheet" href="~/css/admin.css">
+</head>
+<body>
+    <div class="dash-layout">
+        <aside class="dash-sidebar">
+            <a class="brand" asp-controller="Admin" asp-action="Index">
+                <span>✚</span> MedCare
+            </a>
+
+            <div class="side-sep">Quản trị</div>
+
+            <nav>
+                <a asp-controller="Admin" asp-action="Index">📊 Tổng quan</a>
+                <a asp-controller="Admin" asp-action="Medicines">💊 Thuốc</a>
+                <a asp-controller="Admin" asp-action="Categories">🗂️ Danh mục</a>
+                <a asp-controller="Admin" asp-action="Suppliers">🏭 Nhà cung cấp</a>
+                <a class="active" asp-controller="Admin" asp-action="NhapKho">📥 Nhập kho</a>
+                <a asp-controller="Admin" asp-action="Users">👥 Người dùng</a>
+                <a asp-controller="Admin" asp-action="Reports">📈 Báo cáo</a>
+            </nav>
+
+            <div class="side-sep">Liên kết</div>
+
+            <nav>
+                <a asp-controller="Home" asp-action="Index">🏠 Trang chủ khách hàng</a>
+                <a asp-controller="Pharmacist" asp-action="Index">💼 Khu vực Dược sĩ</a>
+            </nav>
+        </aside>
+
+        <main class="dash-main">
+            <div class="dash-header">
+                <div>
+                    <div class="breadcrumb">Admin / Nhập kho</div>
+                    <h1>Lập phiếu nhập kho</h1>
+                </div>
+
+                <div style="display:flex;gap:8px;align-items:center">
+                    <span id="authArea"></span>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-title">
+                    <span>Thông tin lô thuốc</span>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-field full">
+                        <label>Thuốc</label>
+                        <select id="poMed">
+                            <option value="">-- Chọn thuốc --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-field">
+                        <label>Số lô</label>
+                        <input id="poLot" placeholder="VD: LOT001">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Số lượng</label>
+                        <input id="poQty" type="number" min="1" value="1">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Ngày sản xuất</label>
+                        <input id="poMfg" type="date">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Hạn sử dụng</label>
+                        <input id="poExp" type="date">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Đơn giá nhập (đ)</label>
+                        <input id="poPrice" type="number" min="0" value="0">
+                    </div>
+
+                    <div class="form-field">
+                        <label>&nbsp;</label>
+                        <button class="btn" id="btnAddPoLine" type="button">+ Thêm vào phiếu</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-title">
+                    <span>Chi tiết phiếu nhập</span>
+                    <span class="text-muted" style="font-size:13px">
+                        Tổng SL: <b id="poTotalQty">0</b> · Tổng tiền: <b id="poTotalAmt">0đ</b>
+                    </span>
+                </div>
+
+                <div class="table-wrap">
+                    <table class="tbl">
+                        <thead>
+                            <tr>
+                                <th>Thuốc</th>
+                                <th>Số lô</th>
+                                <th>NSX</th>
+                                <th>HSD</th>
+                                <th>Số lượng</th>
+                                <th>Đơn giá</th>
+                                <th>Thành tiền</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="poBody"></tbody>
+                    </table>
+                </div>
+
+                <div style="text-align:right;margin-top:16px">
+                    <button class="btn" id="btnSavePo">💾 Lưu phiếu nhập</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="~/js/api.js"></script>
+    <script src="~/js/main.js"></script>
+    <script src="~/js/auth.js"></script>
+    <script src="~/js/admin.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (typeof requireRole === "function") requireRole("admin");
+            if (typeof renderAuthArea === "function") renderAuthArea();
+            if (typeof initNhapKhoPage === "function") {
+                initNhapKhoPage();
+            } else {
+                const sel = document.getElementById("poMed");
+                if (sel && typeof DEMO_PRODUCTS !== "undefined") {
+                    DEMO_PRODUCTS.forEach(p => {
+                        const opt = document.createElement("option");
+                        opt.value = p.id;
+                        opt.textContent = p.name + " — " + (typeof formatPrice === "function" ? formatPrice(p.price) : p.price + "đ");
+                        sel.appendChild(opt);
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký - MedCare</title>
+    <link rel="stylesheet" href="~/css/main.css">
+    <link rel="stylesheet" href="~/css/auth.css">
+</head>
+<body class="auth-page">
+    <div class="auth-card">
+        <a class="auth-logo" asp-controller="Home" asp-action="Index"><span>✚</span> MedCare</a>
+
+        <h2>Đăng ký tài khoản</h2>
+        <p class="sub">Tạo tài khoản MedCare để mua sắm nhanh chóng</p>
+
+        <form onsubmit="handleRegisterSubmit(event)" novalidate>
+            <div class="form-field">
+                <label>Họ tên</label>
+                <input name="name" type="text" placeholder="Nguyễn Văn A" required>
+            </div>
+
+            <div class="form-field">
+                <label>Số điện thoại</label>
+                <input name="phone" type="tel" placeholder="09xxxxxxxx" required>
+            </div>
+
+            <div class="form-field">
+                <label>Email (không bắt buộc)</label>
+                <input name="email" type="email" placeholder="you@example.com">
+            </div>
+
+            <div class="form-field">
+                <label>Mật khẩu (tối thiểu 6 ký tự)</label>
+                <input name="password" type="password" required>
+            </div>
+
+            <div class="form-field">
+                <label>Xác nhận mật khẩu</label>
+                <input name="passwordConfirm" type="password" required>
+            </div>
+
+            <button type="submit">Đăng ký</button>
+        </form>
+
+        <div class="switch">
+            Đã có tài khoản? <a asp-controller="Customer" asp-action="Login">Đăng nhập</a>
+        </div>
+
+        <a class="back" asp-controller="Home" asp-action="Index">← Về trang chủ</a>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="~/js/api.js"></script>
+    <script src="~/js/main.js"></script>
+    <script src="~/js/auth.js"></script>
+</body>
+</html>

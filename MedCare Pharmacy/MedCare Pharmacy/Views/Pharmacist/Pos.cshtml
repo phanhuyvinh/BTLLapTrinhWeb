@@ -1,0 +1,95 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bán tại quầy POS - MedCare</title>
+    <link rel="stylesheet" href="~/css/main.css">
+    <link rel="stylesheet" href="~/css/pharmacy.css">
+</head>
+<body>
+    <div class="dash-layout">
+        <aside class="dash-sidebar">
+            <a class="brand" asp-controller="Pharmacist" asp-action="Index">
+                <span>✚</span> MedCare
+            </a>
+
+            <div class="side-sep">Nghiệp vụ Dược sĩ</div>
+
+            <nav>
+                <a asp-controller="Pharmacist" asp-action="Index">📊 Tổng quan</a>
+                <a class="active" asp-controller="Pharmacist" asp-action="Pos">💵 Bán tại quầy POS</a>
+                <a asp-controller="Pharmacist" asp-action="OnlineOrders">📦 Đơn online</a>
+                <a asp-controller="Pharmacist" asp-action="InventoryAlert">⚠️ Cảnh báo kho</a>
+                <a asp-controller="Pharmacist" asp-action="Consultation">💬 Tư vấn trực tuyến</a>
+            </nav>
+
+            <div class="side-sep">Liên kết</div>
+
+            <nav>
+                <a asp-controller="Home" asp-action="Index">🏠 Trang chủ khách hàng</a>
+                <a asp-controller="Admin" asp-action="Index">🛡️ Khu vực Admin</a>
+            </nav>
+        </aside>
+
+        <main class="dash-main">
+            <div class="dash-header">
+                <div>
+                    <div class="breadcrumb">Dược sĩ / POS</div>
+                    <h1>Bán tại quầy (POS)</h1>
+                </div>
+
+                <div style="display:flex;gap:8px;align-items:center">
+                    <span id="authArea"></span>
+                </div>
+            </div>
+
+            <div class="pos-layout">
+                <section class="pos-products">
+                    <div class="pos-search">
+                        <input id="posSearch" type="text" placeholder="🔍 Tìm thuốc theo tên / hoạt chất...">
+                    </div>
+
+                    <div class="pos-grid" id="posGrid"></div>
+                </section>
+
+                <aside class="pos-invoice">
+                    <h3>
+                        Hóa đơn
+                        <span class="badge info" id="invCount">0</span>
+                    </h3>
+
+                    <div class="inv-list" id="invList"></div>
+                    <div class="totals" id="invTotals"></div>
+
+                    <button class="primary-btn" style="width:100%;margin-top:12px" id="btnCheckout">
+                        Thanh toán
+                    </button>
+
+                    <button class="btn muted" style="width:100%;margin-top:6px" id="btnClearInvoice">
+                        Xóa hóa đơn
+                    </button>
+                </aside>
+            </div>
+        </main>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="~/js/api.js"></script>
+    <script src="~/js/main.js"></script>
+    <script src="~/js/auth.js"></script>
+    <script src="~/js/pharmacy.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (typeof requireRole === "function") requireRole("pharmacist");
+            if (typeof renderAuthArea === "function") renderAuthArea();
+            if (typeof initPosPage === "function") initPosPage();
+        });
+    </script>
+</body>
+</html>

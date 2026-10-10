@@ -1,0 +1,153 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt hàng - MedCare</title>
+
+    <link rel="stylesheet" href="~/css/main.css">
+    <link rel="stylesheet" href="~/css/customer.css">
+</head>
+<body>
+    <header class="top-header">
+        <div class="top-bar">
+            <span>📍 Tìm nhà thuốc</span>
+            <a asp-controller="Customer" asp-action="Orders">Tra cứu đơn hàng</a>
+            <span>Hotline: 1800 0000</span>
+        </div>
+
+        <div class="main-header">
+            <a class="logo" asp-controller="Home" asp-action="Index">
+                <span>✚</span> MedCare
+            </a>
+
+            <form class="search-box" onsubmit="event.preventDefault(); location.href='@Url.Action("Products", "Customer")?q=' + encodeURIComponent(this.q.value)">
+                <input name="q" type="text" placeholder="Tìm kiếm thuốc, vitamin...">
+                <button type="submit">🔍</button>
+            </form>
+
+            <div class="header-actions">
+                <span id="authArea"></span>
+                <a asp-controller="Customer" asp-action="Cart" class="link-btn">
+                    🛒 Giỏ hàng <b id="cartCount">0</b>
+                </a>
+            </div>
+        </div>
+
+        <nav class="nav">
+            <a asp-controller="Home" asp-action="Index">Trang chủ</a>
+            <a asp-controller="Customer" asp-action="Products">Thuốc & Sản phẩm</a>
+            <a asp-controller="Customer" asp-action="Consultation">💬 Tư vấn trực tuyến</a>
+            <a asp-controller="Customer" asp-action="Prescription">Đơn thuốc</a>
+            <a asp-controller="Customer" asp-action="Orders">Đơn hàng</a>
+        </nav>
+    </header>
+
+    <main class="page-wrap">
+        <h1 style="margin-bottom:18px">Đặt hàng</h1>
+
+        <form id="checkoutForm" class="checkout-grid">
+            <div class="panel">
+                <h3 style="margin-bottom:14px">Thông tin giao hàng</h3>
+
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label>Họ tên *</label>
+                        <input name="name" required>
+                    </div>
+
+                    <div class="form-field">
+                        <label>Số điện thoại *</label>
+                        <input name="phone" required>
+                    </div>
+
+                    <div class="form-field full">
+                        <label>Địa chỉ *</label>
+                        <input name="address" required>
+                    </div>
+
+                    <div class="form-field">
+                        <label>Tỉnh / Thành *</label>
+                        <select name="city" required>
+                            <option value="">-- Chọn --</option>
+                            <option>Hà Nội</option>
+                            <option>TP. Hồ Chí Minh</option>
+                            <option>Đà Nẵng</option>
+                            <option>Cần Thơ</option>
+                            <option>Khác</option>
+                        </select>
+                    </div>
+
+                    <div class="form-field">
+                        <label>Phương thức thanh toán</label>
+                        <select name="payment">
+                            <option value="cod">Thanh toán khi nhận hàng (COD)</option>
+                            <option value="bank">Chuyển khoản ngân hàng</option>
+                            <option value="momo">Ví MoMo</option>
+                        </select>
+                    </div>
+
+                    <div class="form-field full">
+                        <label>Ghi chú</label>
+                        <textarea name="note" rows="2" placeholder="Ghi chú cho dược sĩ..."></textarea>
+                    </div>
+                </div>
+
+                <h3 style="margin:18px 0 10px">Đơn thuốc (khuyến nghị với thuốc kê đơn)</h3>
+
+                <label class="file-input-wrap" for="rxFile">
+                    <input id="rxFile" type="file" accept="image/png,image/jpeg,application/pdf">
+                    <div class="fi-icon">📎</div>
+                    <div style="font-weight:600;margin-top:6px">Tải ảnh đơn thuốc</div>
+                    <div class="text-muted" style="font-size:12px">PNG, JPG, JPEG, PDF</div>
+                    <div id="rxFileName" style="margin-top:8px;color:#0b8f66;font-size:13px"></div>
+                </label>
+            </div>
+
+            <aside class="panel">
+                <h3 style="margin-bottom:14px">Đơn hàng của bạn</h3>
+
+                <div class="order-review" id="orderReview"></div>
+
+                <div class="row" style="display:flex;justify-content:space-between;padding:4px 0">
+                    <span>Tạm tính</span>
+                    <b id="ckSubtotal">0đ</b>
+                </div>
+
+                <div class="row" style="display:flex;justify-content:space-between;padding:4px 0">
+                    <span>Phí giao hàng</span>
+                    <b id="ckShipping">0đ</b>
+                </div>
+
+                <div class="total" style="display:flex;justify-content:space-between;border-top:1px dashed #dce3e3;padding-top:10px;margin-top:8px">
+                    <span>Tổng cộng</span>
+                    <b style="color:#d92d20;font-size:20px" id="ckTotal">0đ</b>
+                </div>
+
+                <button type="submit" class="primary-btn mt-16" style="width:100%;padding:13px">
+                    Xác nhận đặt hàng
+                </button>
+            </aside>
+        </form>
+    </main>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="~/js/api.js"></script>
+    <script src="~/js/main.js"></script>
+    <script src="~/js/auth.js"></script>
+    <script src="~/js/cart.js"></script>
+    <script src="~/js/customer.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (typeof updateCartCount === "function") updateCartCount();
+            if (typeof renderAuthArea === "function") renderAuthArea();
+            if (typeof initCheckoutPage === "function") initCheckoutPage();
+        });
+    </script>
+</body>
+</html>

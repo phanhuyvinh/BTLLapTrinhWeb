@@ -1,0 +1,36 @@
+﻿<header class="top-header">
+    <div class="top-bar">
+        <a asp-controller="Stores" asp-action="Index">📍 Tìm nhà thuốc</a>
+        <a asp-controller="Customer" asp-action="Orders">Tra cứu đơn hàng</a>
+        <span>Hotline: 1800 0000</span>
+    </div>
+
+    <div class="main-header">
+        <a class="logo" asp-controller="Home" asp-action="Index">
+            <span>✚</span> MedCare
+        </a>
+
+        <form class="search-box" onsubmit="event.preventDefault(); location.href='@Url.Action("Products", "Customer")?q=' + encodeURIComponent(this.q.value)">
+            <input id="searchInput" name="q" type="text" placeholder="Tìm kiếm thuốc, vitamin, sản phẩm...">
+            <button type="submit">🔍</button>
+        </form>
+
+        <div class="header-actions">
+            <span id="authArea"></span>
+            <a asp-controller="Customer" asp-action="Cart" class="link-btn">
+                🛒 Giỏ hàng <b id="cartCount">0</b>
+            </a>
+        </div>
+    </div>
+
+    <nav class="nav">
+        <a asp-controller="Home" asp-action="Index">Trang chủ</a>
+        <a asp-controller="Customer" asp-action="Products" asp-route-cat="Thuốc">Thuốc</a>
+        <a asp-controller="Customer" asp-action="Products" asp-route-cat="Vitamin">Vitamin & Khoáng chất</a>
+        <a asp-controller="Customer" asp-action="Products" asp-route-cat="Dược mỹ phẩm">Dược mỹ phẩm</a>
+        <a asp-controller="Customer" asp-action="Products" asp-route-cat="Thiết bị y tế">Thiết bị y tế</a>
+        <a asp-controller="Customer" asp-action="Products" asp-route-cat="Chăm sóc cá nhân">Chăm sóc cá nhân</a>
+        <a asp-controller="Customer" asp-action="Products" asp-route-cat="Mẹ & Bé">Mẹ & Bé</a>
+        <a asp-controller="Customer" asp-action="Consultation">💬 Tư vấn trực tuyến</a>
+    </nav>
+</header>

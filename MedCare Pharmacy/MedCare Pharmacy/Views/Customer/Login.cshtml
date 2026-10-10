@@ -1,0 +1,180 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - MedCare Pharmacy</title>
+    <link rel="stylesheet" href="~/css/main.css">
+    <link rel="stylesheet" href="~/css/auth.css">
+</head>
+<body class="auth-page">
+    <div class="auth-card">
+        <a class="auth-logo" asp-controller="Home" asp-action="Index">
+            <span>✚</span> MedCare
+        </a>
+
+        <div id="alreadyLogged" style="display:none">
+            <h2>Bạn đã đăng nhập</h2>
+            <p class="sub" id="loggedAs"></p>
+
+            <div style="display:flex;gap:8px;margin-top:14px">
+                <a id="goDashBtn"
+                   class="primary-btn"
+                   style="flex:1;text-align:center;text-decoration:none;padding:12px">
+                    Vào hệ thống
+                </a>
+
+                <button type="button"
+                        class="btn danger"
+                        style="flex:1"
+                        onclick="handleLogout(event)">
+                    Đăng xuất
+                </button>
+            </div>
+
+            <a class="back"
+               asp-controller="Home"
+               asp-action="Index"
+               style="margin-top:20px">
+                ← Về trang chủ
+            </a>
+        </div>
+
+        <div id="loginBlock">
+            <h2>Đăng nhập</h2>
+            <p class="sub">Chào mừng bạn trở lại MedCare Pharmacy</p>
+        </div>
+
+        <div class="role-hint" id="roleHint">
+            <b>Tài khoản test:</b><br>
+            • Admin: <code>admin@medcare.vn</code> (pass: 123456)<br>
+            • Dược sĩ: <code>pharma@medcare.vn</code> (pass: 123456)<br>
+            • Khách hàng: Email bất kỳ
+        </div>
+
+        <form id="loginForm" onsubmit="handleLoginSubmit(event)" novalidate>
+            <div class="form-field">
+                <label>Email / Số điện thoại</label>
+                <input name="email"
+                       type="text"
+                       placeholder="you@example.com"
+                       required>
+            </div>
+
+            <div class="form-field">
+                <label>Mật khẩu</label>
+                <input name="password"
+                       type="password"
+                       placeholder="••••••"
+                       required>
+            </div>
+
+            <div class="row-check">
+                <label>
+                    <input type="checkbox">
+                    Ghi nhớ đăng nhập
+                </label>
+
+                <a href="#">Quên mật khẩu?</a>
+            </div>
+
+            <button type="submit" class="primary-btn" style="width:100%;margin-top:12px;padding:12px">Đăng nhập</button>
+        </form>
+
+        <div class="switch" id="switchBlock">
+            Chưa có tài khoản?
+            <a asp-controller="Customer" asp-action="Register">
+                Đăng ký ngay
+            </a>
+        </div>
+
+        <a class="back"
+           asp-controller="Home"
+           asp-action="Index"
+           style="margin-top:16px;display:inline-block">
+            ← Về trang chủ
+        </a>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="~/js/api.js"></script>
+    <script src="~/js/main.js"></script>
+    <script src="~/js/auth.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const u = (typeof getCurrentUser === "function") ? getCurrentUser() : null;
+
+            const params = new URLSearchParams(location.search);
+            const required = (params.get("role") || "customer").toLowerCase();
+            const next = params.get("next");
+
+            if (!u) return;
+
+            const isAllowed =
+                required === "customer" ||
+                u.role === required ||
+                u.role === "admin";
+
+            let target = "@Url.Action("Products", "Customer")";
+
+            if (required === "admin" && u.role === "admin") {
+                target = "@Url.Action("Index", "Admin")";
+            }
+            else if (required === "pharmacist" && (u.role === "pharmacist" || u.role === "admin")) {
+                target = "@Url.Action("Index", "Pharmacist")";
+            }
+            else if (required === "customer" && next) {
+                target = next;
+            }
+
+            // Nếu đã đăng nhập đúng role thì chuyển hướng ngay
+            if (isAllowed) {
+                const overlay = document.createElement("div");
+                overlay.style.cssText =
+                    "position:fixed;inset:0;display:grid;place-items:center;" +
+                    "background:#f4fbf8;font-family:Arial;font-size:16px;" +
+                    "color:#0b8f66;font-weight:600;z-index:9999";
+                overlay.textContent = "Đang chuyển hướng...";
+                document.body.appendChild(overlay);
+
+                location.replace(target);
+                return;
+            }
+
+            // Ngược lại (sai role): Hiển thị thông báo đã đăng nhập với account hiện tại
+            const form = document.getElementById("loginForm");
+            if (form) form.style.display = "none";
+
+            const hint = document.getElementById("roleHint");
+            if (hint) hint.style.display = "none";
+
+            const sw = document.getElementById("switchBlock");
+            if (sw) sw.style.display = "none";
+
+            const block = document.getElementById("alreadyLogged");
+            if (block) {
+                block.style.display = "block";
+                const loggedAs = document.getElementById("loggedAs");
+                if (loggedAs) {
+                    loggedAs.textContent =
+                        "Bạn đang đăng nhập với vai trò '" + (u.role || "customer") + "' (" + (u.name || u.email) + "). " +
+                        "Khu vực này yêu cầu quyền '" + required + "'.";
+                }
+
+                const btn = document.getElementById("goDashBtn");
+                if (btn) {
+                    if (u.role === "admin") btn.href = "@Url.Action("Index", "Admin")";
+                    else if (u.role === "pharmacist") btn.href = "@Url.Action("Index", "Pharmacist")";
+                    else btn.href = "@Url.Action("Products", "Customer")";
+                }
+            }
+        });
+    </script>
+</body>
+</html>

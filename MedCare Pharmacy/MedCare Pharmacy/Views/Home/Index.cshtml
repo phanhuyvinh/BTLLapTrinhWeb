@@ -1,0 +1,76 @@
+﻿@{
+    ViewData["Title"] = "Trang chủ";
+}
+
+<!-- 1. Hero Banner -->
+<section class="hero">
+    <div class="hero-content">
+        <p class="eyebrow">NHÀ THUỐC TRỰC TUYẾN</p>
+        <h1>Chăm sóc sức khỏe<br>cho cả gia đình</h1>
+        <p>Sản phẩm đa dạng · Nguồn gốc rõ ràng · Giao hàng nhanh</p>
+        <button class="primary-btn" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">
+            Mua sắm ngay
+        </button>
+    </div>
+    <div class="hero-icon">💊</div>
+</section>
+
+<!-- 2. Danh mục nổi bật -->
+<section class="section">
+    <div class="section-title">
+        <div>
+            <p class="eyebrow">KHÁM PHÁ</p>
+            <h2>Danh mục nổi bật</h2>
+        </div>
+    </div>
+
+    <div class="categories">
+        <a class="category" href="/Customer/Products?cat=Thuốc">💊<span>Thuốc</span></a>
+        <a class="category" href="/Customer/Products?cat=Vitamin">🍊<span>Vitamin</span></a>
+        <a class="category" href="/Customer/Products?cat=Dược mỹ phẩm">🧴<span>Dược mỹ phẩm</span></a>
+        <a class="category" href="/Customer/Products?cat=Thiết bị y tế">🩺<span>Thiết bị y tế</span></a>
+        <a class="category" href="/Customer/Products?cat=Chăm sóc cá nhân">🧼<span>Chăm sóc cá nhân</span></a>
+        <a class="category" href="/Customer/Products?cat=Mẹ & Bé">👶<span>Mẹ & Bé</span></a>
+    </div>
+</section>
+
+<!-- 3. Lưới sản phẩm -->
+<section class="section" id="products">
+    <div class="section-title">
+        <div>
+            <p class="eyebrow">SẢN PHẨM</p>
+            <h2>Sản phẩm nổi bật</h2>
+        </div>
+        <select id="sortSelect">
+            <option value="default">Sắp xếp</option>
+            <option value="low">Giá thấp → cao</option>
+            <option value="high">Giá cao → thấp</option>
+        </select>
+    </div>
+
+    <div id="productList" class="products"></div>
+</section>
+
+<!-- 4. Health Banner -->
+<section class="health-banner">
+    <div>
+        <p class="eyebrow">MEDCARE CARE</p>
+        <h2>Đặt thuốc dễ dàng,<br>chăm sóc sức khỏe an tâm.</h2>
+        <p>Hệ thống MedCare Pharmacy tích hợp ASP.NET Core MVC & Web API.</p>
+    </div>
+    <div class="health-icon">🩺</div>
+</section>
+
+@section Scripts {
+    <script src="~/js/auth.js"></script>
+    <script src="~/js/cart.js"></script>
+    <script src="~/js/customer.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (typeof updateCartCount === "function") updateCartCount();
+            if (typeof renderHomeProducts === "function") renderHomeProducts();
+            const s = document.getElementById("sortSelect");
+            if (s) s.addEventListener("change", renderHomeProducts);
+        });
+    </script>
+}

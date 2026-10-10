@@ -1,0 +1,53 @@
+/* Bổ sung cho admin/* */
+.chart-box {
+    background: white; border: 1px solid #edf0f0;
+    border-radius: 12px; padding: 20px; margin-bottom: 22px;
+}
+.chart-canvas {
+    width: 100%; height: 260px;
+    background: #fbfdfd; border-radius: 10px; position: relative;
+    overflow: hidden;
+}
+.chart-canvas .bar {
+    position: absolute; bottom: 0; width: 26px;
+    background: linear-gradient(180deg, #0b8f66, #4ec49c);
+    border-radius: 6px 6px 0 0; transition: .4s;
+}
+.chart-canvas .bar span {
+    position: absolute; top: -20px; left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px; color: #475467;
+}
+.chart-canvas .x-label {
+    position: absolute; bottom: -22px; left: 50%;
+    transform: translateX(-50%); font-size: 11px; color: #667085;
+}
+
+.filter-row {
+    display: flex; gap: 12px; flex-wrap: wrap; align-items: end;
+    margin-bottom: 18px;
+}
+.filter-row .form-field { min-width: 160px; }
+
+.kpi-inline {
+    display: flex; gap: 20px; flex-wrap: wrap;
+    color: #475467; font-size: 14px; margin-bottom: 10px;
+}
+.kpi-inline b { color: #0b8f66; }
+
+.best-selling li {
+    display: flex; justify-content: space-between;
+    padding: 10px 4px; border-bottom: 1px dashed #eef2f2;
+    font-size: 14px;
+}
+.best-selling li .rank {
+    display: inline-flex; width: 22px; height: 22px;
+    background: #eaf8f3; color: #0b8f66;
+    border-radius: 6px; justify-content: center; align-items: center;
+    font-weight: 700; font-size: 12px; margin-right: 10px;
+}
+
+.supplier-form-block {
+    border: 1px dashed #dce3e3; border-radius: 12px;
+    padding: 16px; margin-bottom: 14px; background: #fbfdfd;
+}

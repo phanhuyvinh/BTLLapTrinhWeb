@@ -1,0 +1,126 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - MedCare</title>
+    <link rel="stylesheet" href="~/css/main.css">
+    <link rel="stylesheet" href="~/css/admin.css">
+</head>
+<body>
+    <div class="dash-layout">
+        <aside class="dash-sidebar">
+            <a class="brand" asp-controller="Admin" asp-action="Index">
+                <span>✚</span> MedCare
+            </a>
+
+            <div class="side-sep">Quản trị</div>
+
+            <nav>
+                <a class="active" asp-controller="Admin" asp-action="Index">📊 Tổng quan</a>
+                <a asp-controller="Admin" asp-action="Medicines">💊 Thuốc</a>
+                <a asp-controller="Admin" asp-action="Categories">🗂️ Danh mục</a>
+                <a asp-controller="Admin" asp-action="Suppliers">🏭 Nhà cung cấp</a>
+                <a asp-controller="Admin" asp-action="NhapKho">📥 Nhập kho</a>
+                <a asp-controller="Admin" asp-action="Users">👥 Người dùng</a>
+                <a asp-controller="Admin" asp-action="Reports">📈 Báo cáo</a>
+            </nav>
+
+            <div class="side-sep">Liên kết</div>
+
+            <nav>
+                <a asp-controller="Home" asp-action="Index">🏠 Trang chủ khách hàng</a>
+                <a asp-controller="Pharmacist" asp-action="Index">💼 Khu vực Dược sĩ</a>
+            </nav>
+        </aside>
+
+        <main class="dash-main">
+            <div class="dash-header">
+                <div>
+                    <div class="breadcrumb">Admin / Tổng quan</div>
+                    <h1>Bảng điều khiển Quản trị</h1>
+                </div>
+
+                <div style="display:flex;gap:8px;align-items:center">
+                    <span id="authArea"></span>
+                </div>
+            </div>
+
+            <div class="stat-grid" id="adminStats">
+                <div class="stat-card">
+                    <div class="label">Doanh thu tháng</div>
+                    <div class="value" id="stRevenue">0đ</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="label">Tổng đơn hàng</div>
+                    <div class="value" id="stOrders">0</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="label">Sản phẩm</div>
+                    <div class="value" id="stProducts">0</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="label">Người dùng</div>
+                    <div class="value" id="stUsers">0</div>
+                </div>
+            </div>
+
+            <div class="stat-grid">
+                <div class="stat-card warn">
+                    <div class="label">Cảnh báo hệ thống</div>
+                    <div class="value" id="stAlerts">0</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="label">Đơn chờ duyệt</div>
+                    <div class="value">3</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="label">Sản phẩm sắp hết</div>
+                    <div class="value">2</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="label">Lô cận hạn</div>
+                    <div class="value">2</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-title">
+                    <span>Lối tắt quản trị</span>
+                </div>
+
+                <div style="display:flex;gap:12px;flex-wrap:wrap">
+                    <a class="btn" asp-controller="Admin" asp-action="Medicines">Quản lý thuốc</a>
+                    <a class="btn ghost" asp-controller="Admin" asp-action="NhapKho">Lập phiếu nhập kho</a>
+                    <a class="btn ghost" asp-controller="Admin" asp-action="Users">Quản lý người dùng</a>
+                    <a class="btn ghost" asp-controller="Admin" asp-action="Reports">Xem báo cáo</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="~/js/api.js"></script>
+    <script src="~/js/main.js"></script>
+    <script src="~/js/auth.js"></script>
+    <script src="~/js/admin.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (typeof requireRole === "function") requireRole("admin");
+            if (typeof renderAuthArea === "function") renderAuthArea();
+            if (typeof initAdminDashboard === "function") initAdminDashboard();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+﻿<footer>
+    <div>
+        <div class="logo"><span>✚</span> MedCare</div>
+        <p>Nhà thuốc trực tuyến — giao diện hệ thống quản lý dược phẩm.</p>
+        <p style="margin-top:10px">
+            <a asp-controller="Customer" asp-action="Login">Đăng nhập</a> ·
+            <a asp-controller="Customer" asp-action="Products">Sản phẩm</a> ·
+            <a asp-controller="Customer" asp-action="Orders">Đơn hàng</a>
+        </p>
+    </div>
+    <div>
+        <h3>Hỗ trợ</h3>
+        <p><a asp-controller="Home" asp-action="ShippingPolicy">Chính sách giao hàng</a></p>
+        <p><a asp-controller="Home" asp-action="BuyingGuide">Hướng dẫn mua hàng</a></p>
+        <p><a asp-controller="Home" asp-action="ReturnPolicy">Chính sách đổi trả</a></p>
+        <p><a asp-controller="Customer" asp-action="Consultation">Tư vấn với dược sĩ</a></p>
+    </div>
+    <div>
+        <h3>Liên hệ</h3>
+        <p>Hotline: 1800 0000</p>
+        <p>Email: support@medcare.vn</p>
+        <p>
+            <a href="https://zalo.me/18000000" target="_blank" rel="noopener">Zalo</a> ·
+            <a href="https://facebook.com/medcarepharmacy" target="_blank" rel="noopener">Facebook</a>
+        </p>
+        <p id="footerStaffLinks" style="margin-top:12px">
+            <a asp-controller="Customer" asp-action="Login" asp-route-role="pharmacist">Khu vực Dược sĩ</a><br>
+            <a asp-controller="Customer" asp-action="Login" asp-route-role="admin">Khu vực Quản trị</a>
+        </p>
+    </div>
+</footer>

@@ -1,0 +1,54 @@
+/* Trang đăng nhập / đăng ký */
+body.auth-page {
+    background: linear-gradient(135deg, #e7f8f1, #f4fbf8);
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+}
+.auth-card {
+    width: 100%; max-width: 440px; background: white;
+    border-radius: 16px; padding: 32px;
+    box-shadow: 0 20px 60px rgba(11,143,102,.15);
+}
+.auth-card .auth-logo {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 24px; font-weight: 800; color: #0b8f66;
+    text-decoration: none; justify-content: center;
+    margin-bottom: 6px;
+}
+.auth-card .auth-logo span {
+    display: inline-flex; width: 32px; height: 32px;
+    justify-content: center; align-items: center;
+    background: #0b8f66; color: white; border-radius: 8px;
+}
+.auth-card h2 { text-align: center; margin: 12px 0 6px; font-size: 22px; }
+.auth-card p.sub { text-align: center; color: #667085; font-size: 14px; margin-bottom: 22px; }
+.auth-card .form-field { margin-bottom: 14px; }
+.auth-card .row-check {
+    display: flex; justify-content: space-between;
+    align-items: center; font-size: 13px; color: #475467;
+    margin: 6px 0 18px;
+}
+.auth-card .row-check a { color: #0b8f66; text-decoration: none; }
+.auth-card button[type="submit"] {
+    width: 100%; padding: 12px;
+    background: #0b8f66; color: white; border: 0;
+    border-radius: 9px; font-weight: 700;
+}
+.auth-card button[type="submit"]:hover { background: #097a57; }
+.auth-card .switch {
+    text-align: center; margin-top: 18px;
+    font-size: 14px; color: #667085;
+}
+.auth-card .switch a { color: #0b8f66; text-decoration: none; font-weight: 600; }
+.auth-card .back {
+    display: block; text-align: center;
+    margin-top: 10px; font-size: 13px; color: #667085;
+    text-decoration: none;
+}
+.auth-card .error { color: #d92d20; font-size: 13px; margin-top: 4px; }
+.auth-card .role-hint {
+    background: #f5faf8; border: 1px dashed #b9e0d0;
+    border-radius: 8px; padding: 10px 12px; font-size: 12px;
+    color: #475467; margin-bottom: 16px; line-height: 1.5;
+}

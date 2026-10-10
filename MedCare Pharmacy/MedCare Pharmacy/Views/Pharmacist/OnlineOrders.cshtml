@@ -1,0 +1,94 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đơn online - MedCare</title>
+    <link rel="stylesheet" href="~/css/main.css">
+    <link rel="stylesheet" href="~/css/pharmacy.css">
+</head>
+<body>
+    <div class="dash-layout">
+        <aside class="dash-sidebar">
+            <a class="brand" asp-controller="Pharmacist" asp-action="Index">
+                <span>✚</span> MedCare
+            </a>
+
+            <div class="side-sep">Nghiệp vụ Dược sĩ</div>
+
+            <nav>
+                <a asp-controller="Pharmacist" asp-action="Index">📊 Tổng quan</a>
+                <a asp-controller="Pharmacist" asp-action="Pos">💵 Bán tại quầy POS</a>
+                <a class="active" asp-controller="Pharmacist" asp-action="OnlineOrders">📦 Đơn online</a>
+                <a asp-controller="Pharmacist" asp-action="InventoryAlert">⚠️ Cảnh báo kho</a>
+                <a asp-controller="Pharmacist" asp-action="Consultation">💬 Tư vấn trực tuyến</a>
+            </nav>
+
+            <div class="side-sep">Liên kết</div>
+
+            <nav>
+                <a asp-controller="Home" asp-action="Index">🏠 Trang chủ khách hàng</a>
+                <a asp-controller="Admin" asp-action="Index">🛡️ Khu vực Admin</a>
+            </nav>
+        </aside>
+
+        <main class="dash-main">
+            <div class="dash-header">
+                <div>
+                    <div class="breadcrumb">Dược sĩ / Đơn online</div>
+                    <h1>Xử lý đơn hàng online</h1>
+                </div>
+
+                <div style="display:flex;gap:8px;align-items:center">
+                    <span id="authArea"></span>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-title">
+                    <span>Danh sách đơn cần xử lý</span>
+                    <span class="text-muted" style="font-size:13px">
+                        Luồng: Tiếp nhận → Kiểm tra đơn thuốc → Duyệt / Hủy
+                    </span>
+                </div>
+
+                <div class="table-wrap">
+                    <table class="tbl">
+                        <thead>
+                            <tr>
+                                <th>Mã đơn</th>
+                                <th>Khách hàng</th>
+                                <th>Sản phẩm</th>
+                                <th>Đơn thuốc</th>
+                                <th>Tổng tiền</th>
+                                <th>Thời gian</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="~/js/api.js"></script>
+    <script src="~/js/main.js"></script>
+    <script src="~/js/auth.js"></script>
+    <script src="~/js/pharmacy.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (typeof requireRole === "function") requireRole("pharmacist");
+            if (typeof renderAuthArea === "function") renderAuthArea();
+            if (typeof initOnlineOrdersPage === "function") initOnlineOrdersPage();
+        });
+    </script>
+</body>
+</html>

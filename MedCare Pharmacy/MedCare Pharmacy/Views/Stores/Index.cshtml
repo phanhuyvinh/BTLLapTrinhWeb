@@ -1,0 +1,58 @@
+﻿@model IEnumerable<MedCare_Pharmacy.Models.Entities.PharmacyStore>
+@{
+    ViewData["Title"] = "Tìm nhà thuốc";
+    var first = Model.FirstOrDefault(s => s.Latitude != null && s.Longitude != null);
+    var lat = first?.Latitude ?? 10.7731m;
+    var lng = first?.Longitude ?? 106.703m;
+}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<div class="section">
+    <div class="section-title"><h2>Tìm nhà thuốc</h2></div>
+    <div style="display:grid;grid-template-columns:minmax(260px,380px) 1fr;gap:16px">
+        <div>
+            @foreach (var s in Model)
+            {
+                <article class="panel store-card" style="cursor:pointer;margin-bottom:12px"
+                         data-lat="@s.Latitude" data-lng="@s.Longitude" data-name="@s.Name">
+                    <h3 style="margin-bottom:6px">@s.Name</h3>
+                    <p>@s.Address</p>
+                    <p>ĐT: <a href="tel:@s.Phone">@s.Phone</a></p>
+                    <p class="text-muted">@s.OpeningHours</p>
+                </article>
+            }
+            @if (!Model.Any())
+            {
+                <p class="empty">Chưa có chi nhánh.</p>
+            }
+        </div>
+        <div id="store-map" style="height:520px;border-radius:12px;border:1px solid #edf0f0"></div>
+    </div>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    const map = L.map("store-map").setView([@lat, @lng], 12);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap"
+    }).addTo(map);
+    document.querySelectorAll(".store-card").forEach(card => {
+        const lat = parseFloat(card.dataset.lat);
+        const lng = parseFloat(card.dataset.lng);
+        if (Number.isNaN(lat) || Number.isNaN(lng)) return;
+        const marker = L.marker([lat, lng]).addTo(map).bindPopup(card.dataset.name);
+        card.addEventListener("click", () => {
+            map.setView([lat, lng], 16);
+            marker.openPopup();
+        });
+    });
+</script>
+<style>
+    @@media (max-width: 800px) {
+        .section > div {
+            grid-template-columns: 1fr !important;
+        }
+
+        #store-map {
+            height: 320px !important;
+        }
+    }
+</style>

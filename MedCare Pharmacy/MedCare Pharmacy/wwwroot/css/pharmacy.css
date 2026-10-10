@@ -1,0 +1,68 @@
+/* Bổ sung cho pharmacist/* */
+.pos-layout {
+    display: grid; grid-template-columns: 1fr 420px; gap: 18px;
+    align-items: start;
+}
+.pos-products {
+    background: white; border-radius: 12px; padding: 16px;
+    border: 1px solid #edf0f0;
+}
+.pos-search {
+    display: flex; gap: 8px; margin-bottom: 14px;
+}
+.pos-search input {
+    flex: 1; border: 1px solid #dce3e3;
+    border-radius: 8px; padding: 10px 12px;
+}
+.pos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px; max-height: 620px; overflow-y: auto;
+}
+.pos-card {
+    border: 1px solid #edf0f0; border-radius: 10px;
+    padding: 12px; text-align: center; cursor: pointer;
+    background: #fbfdfd; transition: .15s;
+}
+.pos-card:hover { border-color: #0b8f66; background: #f0faf6; }
+.pos-card .ic { font-size: 32px; }
+.pos-card .nm { font-weight: 600; font-size: 13px; margin: 6px 0 4px; }
+.pos-card .pr { color: #d92d20; font-weight: 700; font-size: 14px; }
+.pos-card .st { color: #667085; font-size: 12px; }
+
+.pos-invoice {
+    background: white; border: 1px solid #edf0f0;
+    border-radius: 12px; padding: 16px;
+    position: sticky; top: 20px;
+}
+.pos-invoice h3 {
+    display: flex; justify-content: space-between;
+    align-items: center; margin-bottom: 12px;
+}
+.pos-invoice .inv-list { max-height: 340px; overflow-y: auto; }
+.pos-invoice .inv-row {
+    display: grid; grid-template-columns: 1fr auto auto;
+    gap: 8px; align-items: center; padding: 8px 0;
+    border-bottom: 1px dashed #eef2f2; font-size: 14px;
+}
+.pos-invoice .inv-row .q input {
+    width: 50px; padding: 4px 6px; text-align: center;
+    border: 1px solid #dce3e3; border-radius: 6px;
+}
+.pos-invoice .inv-row .rm {
+    background: none; border: 0; color: #d92d20; font-size: 16px;
+}
+.pos-invoice .totals {
+    border-top: 2px solid #0b8f66; margin-top: 12px; padding-top: 12px;
+}
+.pos-invoice .totals .row {
+    display: flex; justify-content: space-between; padding: 4px 0; font-size: 14px;
+}
+.pos-invoice .totals .row.grand {
+    font-size: 20px; font-weight: 800; color: #d92d20; padding-top: 8px;
+}
+
+@media (max-width: 1024px) {
+    .pos-layout { grid-template-columns: 1fr; }
+    .pos-invoice { position: static; }
+}
